@@ -4,12 +4,15 @@ namespace PacerIT\BitBayPayAPI;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use PacerIT\BitBayPayAPI\Exceptions\CallMethodError;
+use PacerIT\BitBayPayAPI\Exceptions\CallPaymentsMethodError;
+use PacerIT\BitBayPayAPI\Exceptions\CredentialsNotSet;
+use PacerIT\BitBayPayAPI\Exceptions\MethodResponseFail;
 use PacerIT\BitBayPayAPI\Interfaces\BitBayPayInterface;
-use PacerIT\Exceptions\CallMethodError;
-use PacerIT\Exceptions\CallPaymentsMethodError;
 use Psr\Http\Message\ResponseInterface;
+use Rakit\Validation\Validator;
 
 /**
  * Class BitBayPay
@@ -80,6 +83,7 @@ class BitBayPay implements BitBayPayInterface
      * @return ResponseInterface
      *
      * @throws CallMethodError
+     * @throws CredentialsNotSet
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
@@ -87,6 +91,8 @@ class BitBayPay implements BitBayPayInterface
      */
     public function callMethod(string $method, array $parameters = [], string $type = 'GET'): ResponseInterface
     {
+        $this->checkCredentials();
+
         $client = new Client();
 
         // Generate sign key.
@@ -124,6 +130,8 @@ class BitBayPay implements BitBayPayInterface
      *
      * @throws CallMethodError
      * @throws CallPaymentsMethodError
+     * @throws CredentialsNotSet
+     * @throws MethodResponseFail
      *
      * @since 10/03/2020
      *
@@ -131,23 +139,18 @@ class BitBayPay implements BitBayPayInterface
      */
     public function payments(array $parameters): array
     {
-        $validator = Validator::make(
+        $validator = new Validator;
+        $validation = $validator->make(
             $parameters,
             [
-                BitBayPayInterface::PARAMETER_DESTINATION_CURRENCY => 'required|string',
+                BitBayPayInterface::PARAMETER_DESTINATION_CURRENCY => 'required',
                 BitBayPayInterface::PARAMETER_PRICE                => 'required|numeric',
-                BitBayPayInterface::PARAMETER_ORDER_ID             => 'required|string',
-                BitBayPayInterface::PARAMETER_SOURCE_CURRENCY      => 'nullable|string',
-                BitBayPayInterface::PARAMETER_COVERED_BY           => 'nullable|string',
-                BitBayPayInterface::PARAMETER_KEEP_SOURCE_CURRENCY => 'nullable|boolean',
-                BitBayPayInterface::PARAMETER_SUCCESS_CALLBACK_URL => 'nullable|string',
-                BitBayPayInterface::PARAMETER_FAILURE_CALLBACK_URL => 'nullable|string',
-                BitBayPayInterface::PARAMETER_NOTIFICATIONS_URL    => 'nullable|string',
+                BitBayPayInterface::PARAMETER_ORDER_ID             => 'required',
             ]
         );
 
-        if ($validator->fails()) {
-            throw new CallPaymentsMethodError($validator->errors()->toJson());
+        if ($validation->fails()) {
+            throw new CallPaymentsMethodError(json_encode($validation->errors()->toArray()));
         }
 
         $response = $this->callMethod(
@@ -156,6 +159,50 @@ class BitBayPay implements BitBayPayInterface
             'POST'
         );
 
-        return json_decode($response->getBody(), true);
+        return $this->parseResponse(json_decode($response->getBody(), true));
+    }
+
+    /**
+     * Parse response.
+     *
+     * @param array $response
+     *
+     * @return mixed
+     * @throws MethodResponseFail
+     * @author Wiktor Pacer <kontakt@pacerit.pl>
+     *
+     * @since 10/03/2020
+     */
+    private function parseResponse(array $response)
+    {
+        // Checking response status.
+        switch (Arr::get($response, BitBayPayInterface::STATUS)) {
+            case BitBayPayInterface::STATUS_OK:
+                return Arr::get($response, BitBayPayInterface::DATA, []);
+
+            case BitBayPayInterface::STATUS_FAIL:
+                $errors = Arr::get($response, BitBayPayInterface::ERRORS, []);
+                $reason = Arr::get($errors, BitBayPayInterface::REASON, 'UNKNOWN_REASON');
+                throw new MethodResponseFail($reason);
+
+            default:
+                throw new MethodResponseFail('UNKNOWN_STATUS');
+        }
+    }
+
+    /**
+     * Check credentials are set properly.
+     *
+     * @throws CredentialsNotSet
+     *
+     * @author Wiktor Pacer <kontakt@pacerit.pl>
+     *
+     * @since 10/03/2020
+     */
+    private function checkCredentials()
+    {
+        if ($this->privateKey === null || $this->publicKey === null) {
+            throw new CredentialsNotSet();
+        }
     }
 }

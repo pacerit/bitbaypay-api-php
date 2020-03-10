@@ -7,7 +7,27 @@ You can install this package by composer:
 composer require pacerit/bitbay-api-php
 ```
 ## Usage
-TODO:
+Example call of "payments" API method:
+```php
+$client = new BitBayPay();
+
+$parameters = [
+    BitBayPayInterface::PARAMETER_DESTINATION_CURRENCY => 'PLN',
+    BitBayPayInterface::PARAMETER_PRICE                => '1000',
+    BitBayPayInterface::PARAMETER_ORDER_ID             => Str::random(16),
+    // This parameters below, are not required.
+    // BitBayPayInterface::PARAMETER_SOURCE_CURRENCY      => '',
+    // BitBayPayInterface::PARAMETER_COVERED_BY           => '',
+    // BitBayPayInterface::PARAMETER_KEEP_SOURCE_CURRENCY => '',
+    // BitBayPayInterface::PARAMETER_SUCCESS_CALLBACK_URL => '',
+    // BitBayPayInterface::PARAMETER_FAILURE_CALLBACK_URL => '',
+    // BitBayPayInterface::PARAMETER_NOTIFICATIONS_URL    => '',
+];
+
+$client->setPublicKey("YOUR_PUBLIC_KEY")
+    ->setPrivateKey("YOUR_PRIVATE_KEY")
+    ->payments($parameters);
+```
 ## Available functions
 TODO:
 ## Changelog

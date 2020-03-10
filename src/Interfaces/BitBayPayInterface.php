@@ -2,7 +2,10 @@
 
 namespace PacerIT\BitBayPayAPI\Interfaces;
 
-use PacerIT\Exceptions\CallMethodError;
+use PacerIT\BitBayPayAPI\Exceptions\CallMethodError;
+use PacerIT\BitBayPayAPI\Exceptions\CallPaymentsMethodError;
+use PacerIT\BitBayPayAPI\Exceptions\CredentialsNotSet;
+use PacerIT\BitBayPayAPI\Exceptions\MethodResponseFail;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -15,6 +18,16 @@ use Psr\Http\Message\ResponseInterface;
 interface BitBayPayInterface
 {
     const BASE_URL = 'https://api.bitbaypay.com/rest/bitbaypay/';
+    const PUBLIC_KEY = 'public_key';
+    const PRIVATE_KEY = 'private_key';
+    const STATUS = 'status';
+    const ERRORS = 'errors';
+    const REASON = 'reason';
+    const DATA = 'data';
+
+    // Available statuses.
+    const STATUS_OK = 'ok';
+    const STATUS_FAIL = 'fail';
 
     // Available methods.
     const METHOD_PAYMENTS = 'payments';
@@ -66,6 +79,7 @@ interface BitBayPayInterface
      * @return ResponseInterface
      *
      * @throws CallMethodError
+     * @throws CredentialsNotSet
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
@@ -81,6 +95,9 @@ interface BitBayPayInterface
      * @return array
      *
      * @throws CallMethodError
+     * @throws CallPaymentsMethodError
+     * @throws CredentialsNotSet
+     * @throws MethodResponseFail
      *
      * @since 10/03/2020
      *
