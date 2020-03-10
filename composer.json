@@ -1,0 +1,42 @@
+{
+    "name": "pacerit/bitbay-api-php",
+    "description": "Implementation of BitBayPay REST API",
+    "type": "library",
+    "keywords": [
+        "bitbaypay",
+        "bitbayapi",
+        "bitbay"
+    ],
+    "require": {
+        "php": "^7.2",
+        "illuminate/support": "^7.0",
+        "guzzlehttp/guzzle": "^6.5",
+        "ramsey/uuid": "^3.9"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wiktor Pacer",
+            "email": "kontakt@pacerit.pl",
+            "role": "Developer",
+            "homepage": "https://pacerit.pl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PacerIT\\BitBayPayAPI\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PacerIT\\BitBayPayAPI\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "minimum-stability": "stable"
+}
