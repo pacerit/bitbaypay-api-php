@@ -97,7 +97,11 @@ class BitBayPay implements BitBayPayInterface
 
         // Generate sign key.
         $time = time();
-        $sign = hash_hmac("sha512", $this->publicKey . $time . json_encode($parameters), $this->privateKey);
+        $post = null;
+        if ($type !== 'GET') {
+            $post = json_encode($parameters);
+        }
+        $sign = hash_hmac("sha512", $this->publicKey . $time . $post, $this->privateKey);
 
         try {
             $response = $client->request(
@@ -106,11 +110,11 @@ class BitBayPay implements BitBayPayInterface
                 [
                     'form_params' => $parameters,
                     'headers'     => [
-                        'API-Key: ' . $this->publicKey,
-                        'API-Hash: ' . $sign,
-                        'operation-id: ' . Str::uuid(),
-                        'Request-Timestamp: ' . $time,
-                        'Content-Type: application/json'
+                        'API-Key'           => $this->publicKey,
+                        'API-Hash'          => $sign,
+                        'operation-id'      => (string)Str::uuid(),
+                        'Request-Timestamp' => $time,
+                        'Content-Type'      => 'application/json'
                     ]
                 ]
             );
@@ -137,7 +141,7 @@ class BitBayPay implements BitBayPayInterface
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      */
-    public function payments(array $parameters): array
+    public function createPayment(array $parameters): array
     {
         $validator = new Validator;
         $validation = $validator->make(
@@ -149,6 +153,8 @@ class BitBayPay implements BitBayPayInterface
             ]
         );
 
+        $validation->validate();
+
         if ($validation->fails()) {
             throw new CallPaymentsMethodError(json_encode($validation->errors()->toArray()));
         }
@@ -157,6 +163,105 @@ class BitBayPay implements BitBayPayInterface
             BitBayPayInterface::METHOD_PAYMENTS,
             $parameters,
             'POST'
+        );
+
+        return $this->parseResponse(json_decode($response->getBody(), true));
+    }
+
+    /**
+     * Call "payments/{paymentId}" API method.
+     *
+     * @param string $paymentID
+     *
+     * @return array
+     *
+     * @throws CallMethodError
+     * @throws CredentialsNotSet
+     * @throws MethodResponseFail
+     *
+     * @author Wiktor Pacer <kontakt@pacerit.pl>
+     *
+     * @since 11/03/2020
+     */
+    public function getPayment(string $paymentID): array
+    {
+        $response = $this->callMethod(
+            BitBayPayInterface::METHOD_PAYMENTS.'/'.$paymentID,
+            [],
+            'GET'
+        );
+
+        return $this->parseResponse(json_decode($response->getBody(), true));
+    }
+
+    /**
+     * Call "stores/currenciesSettings" API method.
+     *
+     * @return array
+     *
+     * @throws CallMethodError
+     * @throws CredentialsNotSet
+     * @throws MethodResponseFail
+     *
+     * @author Wiktor Pacer <kontakt@pacerit.pl>
+     *
+     * @since 11/03/2020
+     */
+    public function getCurrenciesSettings(): array
+    {
+        $response = $this->callMethod(
+            BitBayPayInterface::METHOD_STORES_CURRENCIES_SETTINGS,
+            [],
+            'GET'
+        );
+
+        return $this->parseResponse(json_decode($response->getBody(), true));
+    }
+
+    /**
+     * Call "stores/markets" API method.
+     *
+     * @return array
+     *
+     * @throws CallMethodError
+     * @throws CredentialsNotSet
+     * @throws MethodResponseFail
+     *
+     * @author Wiktor Pacer <kontakt@pacerit.pl>
+     *
+     * @since 11/03/2020
+     */
+    public function getMarkets(): array
+    {
+        $response = $this->callMethod(
+            BitBayPayInterface::METHOD_STORES_MARKETS,
+            [],
+            'GET'
+        );
+
+        return $this->parseResponse(json_decode($response->getBody(), true));
+    }
+
+    /**
+     * Call "payments/search" API function.
+     *
+     * @param array $parameters
+     *
+     * @return array
+     * @throws CallMethodError
+     * @throws CredentialsNotSet
+     * @throws MethodResponseFail
+     *
+     * @author Wiktor Pacer <kontakt@pacerit.pl>
+     *
+     * @since 11/03/2020
+     */
+    public function searchPayments(array $parameters): array
+    {
+        $response = $this->callMethod(
+            BitBayPayInterface::METHOD_PAYMENTS_SEARCH,
+            $parameters,
+            'GET'
         );
 
         return $this->parseResponse(json_decode($response->getBody(), true));

@@ -26,11 +26,14 @@ interface BitBayPayInterface
     const DATA = 'data';
 
     // Available statuses.
-    const STATUS_OK = 'ok';
-    const STATUS_FAIL = 'fail';
+    const STATUS_OK = 'Ok';
+    const STATUS_FAIL = 'Fail';
 
     // Available methods.
     const METHOD_PAYMENTS = 'payments';
+    const METHOD_PAYMENTS_SEARCH = 'payments/search';
+    const METHOD_STORES_CURRENCIES_SETTINGS = 'stores/currenciesSettings';
+    const METHOD_STORES_MARKETS = 'stores/markets';
 
     // Function parameters.
     const PARAMETER_DESTINATION_CURRENCY = 'destinationCurrency';
@@ -103,5 +106,68 @@ interface BitBayPayInterface
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      */
-    public function payments(array $parameters): array;
+    public function createPayment(array $parameters): array;
+
+    /**
+     * Call "payments/{paymentId}" API method.
+     *
+     * @param string $paymentID
+     *
+     * @return array
+     *
+     * @throws CallMethodError
+     * @throws CredentialsNotSet
+     * @throws MethodResponseFail
+     *
+     * @author Wiktor Pacer <kontakt@pacerit.pl>
+     *
+     * @since 11/03/2020
+     */
+    public function getPayment(string $paymentID): array;
+
+    /**
+     * Call "stores/currenciesSettings" API method.
+     *
+     * @return array
+     *
+     * @throws CallMethodError
+     * @throws CredentialsNotSet
+     * @throws MethodResponseFail
+     *
+     * @author Wiktor Pacer <kontakt@pacerit.pl>
+     *
+     * @since 11/03/2020
+     */
+    public function getCurrenciesSettings(): array;
+
+    /**
+     * Call "stores/markets" API method.
+     *
+     * @return array
+     *
+     * @throws CallMethodError
+     * @throws CredentialsNotSet
+     * @throws MethodResponseFail
+     *
+     * @author Wiktor Pacer <kontakt@pacerit.pl>
+     *
+     * @since 11/03/2020
+     */
+    public function getMarkets(): array;
+
+    /**
+     * Call "payments/search" API function.
+     *
+     * @param array $parameters
+     *
+     * @return array
+     * @throws CallMethodError
+     * @throws CredentialsNotSet
+     * @throws MethodResponseFail
+     *
+     * @author Wiktor Pacer <kontakt@pacerit.pl>
+     *
+     * @since 11/03/2020
+     */
+    public function searchPayments(array $parameters): array;
 }

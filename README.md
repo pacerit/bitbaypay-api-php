@@ -1,5 +1,12 @@
 # BitBayPay API
-Implementation of BitBayPay REST API
+![GitHub tag (latest by date)](https://img.shields.io/github/tag-date/pacerit/bitbaypay-api-php?label=Version)
+![GitHub](https://img.shields.io/github/license/pacerit/bitbaypay-api-php?label=License)
+![Packagist](https://img.shields.io/packagist/dt/pacerit/bitbaypay-api-php?label=Downloads)
+![PHP from Packagist](https://img.shields.io/packagist/php-v/pacerit/bitbaypay-api-php?label=PHP)
+[![StyleCI](https://github.styleci.io/repos/246307342/shield?branch=master)](https://github.styleci.io/repos/246307342)
+[![Build Status](https://travis-ci.com/pacerit/bitbaypay-api-php.svg?branch=master)](https://travis-ci.com/pacerit/bitbaypay-api-php)
+
+Implementation of BitBayPay REST API - https://docs.bitbaypay.com/v1.0.0-en/reference
 
 ## Installation
 You can install this package by composer:
@@ -14,7 +21,7 @@ $client = new BitBayPay();
 $parameters = [
     BitBayPayInterface::PARAMETER_DESTINATION_CURRENCY => 'PLN',
     BitBayPayInterface::PARAMETER_PRICE                => '1000',
-    BitBayPayInterface::PARAMETER_ORDER_ID             => Str::random(16),
+    BitBayPayInterface::PARAMETER_ORDER_ID             => (string)Str::random(16),
     // This parameters below, are not required.
     // BitBayPayInterface::PARAMETER_SOURCE_CURRENCY      => '',
     // BitBayPayInterface::PARAMETER_COVERED_BY           => '',
@@ -26,15 +33,25 @@ $parameters = [
 
 $client->setPublicKey("YOUR_PUBLIC_KEY")
     ->setPrivateKey("YOUR_PRIVATE_KEY")
-    ->payments($parameters);
+    ->createPayment($parameters);
 ```
 ## Available functions
-TODO:
+* Start payment - https://api.bitbaypay.com/rest/bitbaypay/payments
+* Get currency pairs - https://api.bitbaypay.com/rest/bitbaypay/stores/markets
+* Get currency settings - https://api.bitbaypay.com/rest/bitbaypay/stores/currenciesSettings
+* Payments list - https://api.bitbaypay.com/rest/bitbaypay/payments/search
+* Payment details - https://api.bitbaypay.com/rest/bitbaypay/payments/{paymentId}​
 ## Changelog
 
 Go to the [Changelog](CHANGELOG.md) for a full change history of the package.
 
 ## Testing
+You must provide your own credentials for testing environment:
+```dotenv
+BITBAYPAY_TEST_PUBLIC_KEY=
+BITBAYPAY_TEST_PRIVATE_KEY=
+```
+Run tests:
 
     composer test
 
