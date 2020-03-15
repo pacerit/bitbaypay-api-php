@@ -6,7 +6,7 @@ use PacerIT\BitBayPayAPI\BitBayPay;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class AbstractTest
+ * Class AbstractTest.
  *
  * @author Wiktor Pacer <kontakt@pacerit.pl>
  *

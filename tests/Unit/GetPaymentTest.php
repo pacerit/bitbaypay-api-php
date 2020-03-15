@@ -8,7 +8,7 @@ use PacerIT\BitBayPayAPI\Exceptions\CredentialsNotSet;
 use PacerIT\BitBayPayAPI\Exceptions\MethodResponseFail;
 
 /**
- * Class GetPaymentTest
+ * Class GetPaymentTest.
  *
  * @author Wiktor Pacer <kontakt@pacerit.pl>
  *
@@ -22,6 +22,7 @@ class GetPaymentTest extends AbstractTest
      * @throws CredentialsNotSet
      * @throws CallMethodError
      * @throws MethodResponseFail
+     *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
      * @since 11/03/2020

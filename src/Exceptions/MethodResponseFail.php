@@ -5,7 +5,7 @@ namespace PacerIT\BitBayPayAPI\Exceptions;
 use Throwable;
 
 /**
- * Class MethodResponseFail
+ * Class MethodResponseFail.
  *
  * @author Wiktor Pacer <kontakt@pacerit.pl>
  *
@@ -16,14 +16,14 @@ class MethodResponseFail extends \Exception
     /**
      * MethodResponseFail constructor.
      *
-     * @param string|null $reason
-     * @param string $message
-     * @param int $code
+     * @param string|null    $reason
+     * @param string         $message
+     * @param int            $code
      * @param Throwable|null $previous
      */
     public function __construct(
         ?string $reason,
-        $message = "",
+        $message = '',
         $code = 0,
         Throwable $previous = null
     ) {

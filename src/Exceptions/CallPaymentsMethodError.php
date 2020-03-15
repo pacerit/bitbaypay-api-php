@@ -5,7 +5,7 @@ namespace PacerIT\BitBayPayAPI\Exceptions;
 use Throwable;
 
 /**
- * Class CallPaymentsMethodError
+ * Class CallPaymentsMethodError.
  *
  * @author Wiktor Pacer <kontakt@pacerit.pl>
  *
@@ -16,14 +16,14 @@ class CallPaymentsMethodError extends \Exception
     /**
      * CallPaymentsMethodError constructor.
      *
-     * @param string|null $details
-     * @param string $message
-     * @param int $code
+     * @param string|null    $details
+     * @param string         $message
+     * @param int            $code
      * @param Throwable|null $previous
      */
     public function __construct(
         ?string $details,
-        $message = "",
+        $message = '',
         $code = 0,
         Throwable $previous = null
     ) {

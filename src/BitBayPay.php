@@ -15,7 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 use Rakit\Validation\Validator;
 
 /**
- * Class BitBayPay
+ * Class BitBayPay.
  *
  * @author Wiktor Pacer <kontakt@pacerit.pl>
  *
@@ -77,13 +77,13 @@ class BitBayPay implements BitBayPayInterface
      * Call API method.
      *
      * @param string $method
-     * @param array $parameters
+     * @param array  $parameters
      * @param string $type
-     *
-     * @return ResponseInterface
      *
      * @throws CallMethodError
      * @throws CredentialsNotSet
+     *
+     * @return ResponseInterface
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
@@ -101,7 +101,7 @@ class BitBayPay implements BitBayPayInterface
         if ($type !== 'GET') {
             $post = json_encode($parameters);
         }
-        $sign = hash_hmac("sha512", $this->publicKey . $time . $post, $this->privateKey);
+        $sign = hash_hmac('sha512', $this->publicKey.$time.$post, $this->privateKey);
 
         try {
             $response = $client->request(
@@ -112,10 +112,10 @@ class BitBayPay implements BitBayPayInterface
                     'headers'     => [
                         'API-Key'           => $this->publicKey,
                         'API-Hash'          => $sign,
-                        'operation-id'      => (string)Str::uuid(),
+                        'operation-id'      => (string) Str::uuid(),
                         'Request-Timestamp' => $time,
-                        'Content-Type'      => 'application/json'
-                    ]
+                        'Content-Type'      => 'application/json',
+                    ],
                 ]
             );
         } catch (ClientException $exception) {
@@ -130,12 +130,12 @@ class BitBayPay implements BitBayPayInterface
      *
      * @param array $parameters
      *
-     * @return array
-     *
      * @throws CallMethodError
      * @throws CallPaymentsMethodError
      * @throws CredentialsNotSet
      * @throws MethodResponseFail
+     *
+     * @return array
      *
      * @since 10/03/2020
      *
@@ -143,7 +143,7 @@ class BitBayPay implements BitBayPayInterface
      */
     public function createPayment(array $parameters): array
     {
-        $validator = new Validator;
+        $validator = new Validator();
         $validation = $validator->make(
             $parameters,
             [
@@ -173,11 +173,11 @@ class BitBayPay implements BitBayPayInterface
      *
      * @param string $paymentID
      *
-     * @return array
-     *
      * @throws CallMethodError
      * @throws CredentialsNotSet
      * @throws MethodResponseFail
+     *
+     * @return array
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
@@ -197,11 +197,11 @@ class BitBayPay implements BitBayPayInterface
     /**
      * Call "stores/currenciesSettings" API method.
      *
-     * @return array
-     *
      * @throws CallMethodError
      * @throws CredentialsNotSet
      * @throws MethodResponseFail
+     *
+     * @return array
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
@@ -221,11 +221,11 @@ class BitBayPay implements BitBayPayInterface
     /**
      * Call "stores/markets" API method.
      *
-     * @return array
-     *
      * @throws CallMethodError
      * @throws CredentialsNotSet
      * @throws MethodResponseFail
+     *
+     * @return array
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
@@ -247,10 +247,11 @@ class BitBayPay implements BitBayPayInterface
      *
      * @param array $parameters
      *
-     * @return array
      * @throws CallMethodError
      * @throws CredentialsNotSet
      * @throws MethodResponseFail
+     *
+     * @return array
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
@@ -272,8 +273,10 @@ class BitBayPay implements BitBayPayInterface
      *
      * @param array $response
      *
-     * @return mixed
      * @throws MethodResponseFail
+     *
+     * @return mixed
+     *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
      * @since 10/03/2020
@@ -288,8 +291,8 @@ class BitBayPay implements BitBayPayInterface
             case BitBayPayInterface::STATUS_FAIL:
                 $errors = Arr::get($response, BitBayPayInterface::ERRORS, []);
                 $reason = Arr::get($errors, BitBayPayInterface::REASON, 'UNKNOWN_REASON');
-                throw new MethodResponseFail($reason);
 
+                throw new MethodResponseFail($reason);
             default:
                 throw new MethodResponseFail('UNKNOWN_STATUS');
         }

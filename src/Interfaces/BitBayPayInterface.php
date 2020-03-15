@@ -9,7 +9,7 @@ use PacerIT\BitBayPayAPI\Exceptions\MethodResponseFail;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Interface BitBayTradingInterface
+ * Interface BitBayTradingInterface.
  *
  * @author Wiktor Pacer <kontakt@pacerit.pl>
  *
@@ -76,13 +76,13 @@ interface BitBayPayInterface
      * Call API method.
      *
      * @param string $method
-     * @param array $parameters
+     * @param array  $parameters
      * @param string $type
-     *
-     * @return ResponseInterface
      *
      * @throws CallMethodError
      * @throws CredentialsNotSet
+     *
+     * @return ResponseInterface
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
@@ -95,12 +95,12 @@ interface BitBayPayInterface
      *
      * @param array $parameters
      *
-     * @return array
-     *
      * @throws CallMethodError
      * @throws CallPaymentsMethodError
      * @throws CredentialsNotSet
      * @throws MethodResponseFail
+     *
+     * @return array
      *
      * @since 10/03/2020
      *
@@ -113,11 +113,11 @@ interface BitBayPayInterface
      *
      * @param string $paymentID
      *
-     * @return array
-     *
      * @throws CallMethodError
      * @throws CredentialsNotSet
      * @throws MethodResponseFail
+     *
+     * @return array
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
@@ -128,11 +128,11 @@ interface BitBayPayInterface
     /**
      * Call "stores/currenciesSettings" API method.
      *
-     * @return array
-     *
      * @throws CallMethodError
      * @throws CredentialsNotSet
      * @throws MethodResponseFail
+     *
+     * @return array
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
@@ -143,11 +143,11 @@ interface BitBayPayInterface
     /**
      * Call "stores/markets" API method.
      *
-     * @return array
-     *
      * @throws CallMethodError
      * @throws CredentialsNotSet
      * @throws MethodResponseFail
+     *
+     * @return array
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
@@ -160,10 +160,11 @@ interface BitBayPayInterface
      *
      * @param array $parameters
      *
-     * @return array
      * @throws CallMethodError
      * @throws CredentialsNotSet
      * @throws MethodResponseFail
+     *
+     * @return array
      *
      * @author Wiktor Pacer <kontakt@pacerit.pl>
      *
