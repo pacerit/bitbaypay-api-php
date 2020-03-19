@@ -56,7 +56,7 @@ abstract class AbstractTest extends TestCase
      */
     public function getTestPublicKey(): ?string
     {
-        return env('BITBAYPAY_TEST_PUBLIC_KEY');
+        return getenv('BITBAYPAY_TEST_PUBLIC_KEY');
     }
 
     /**
@@ -70,6 +70,6 @@ abstract class AbstractTest extends TestCase
      */
     public function getTestPrivateKey(): ?string
     {
-        return env('BITBAYPAY_TEST_PRIVATE_KEY');
+        return getenv('BITBAYPAY_TEST_PRIVATE_KEY');
     }
 }

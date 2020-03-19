@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Support\Str;
 use PacerIT\BitBayPayAPI\Exceptions\CallMethodError;
 use PacerIT\BitBayPayAPI\Exceptions\CallPaymentsMethodError;
 use PacerIT\BitBayPayAPI\Exceptions\CredentialsNotSet;
@@ -38,7 +37,7 @@ class CreatePaymentTest extends AbstractTest
             [
                 BitBayPayInterface::PARAMETER_DESTINATION_CURRENCY => 'PLN',
                 BitBayPayInterface::PARAMETER_PRICE                => '1000',
-                BitBayPayInterface::PARAMETER_ORDER_ID             => (string) Str::random(16),
+                BitBayPayInterface::PARAMETER_ORDER_ID             => 'randomstring',
             ]
         );
     }
@@ -86,7 +85,7 @@ class CreatePaymentTest extends AbstractTest
                 [
                     BitBayPayInterface::PARAMETER_DESTINATION_CURRENCY => 'PLN',
                     BitBayPayInterface::PARAMETER_PRICE                => 100,
-                    BitBayPayInterface::PARAMETER_ORDER_ID             => (string) Str::random(16),
+                    BitBayPayInterface::PARAMETER_ORDER_ID             => 'randomstring',
                 ]
             );
 

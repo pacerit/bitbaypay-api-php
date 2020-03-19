@@ -4,8 +4,6 @@ namespace PacerIT\BitBayPayAPI;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use PacerIT\BitBayPayAPI\Exceptions\CallMethodError;
 use PacerIT\BitBayPayAPI\Exceptions\CallPaymentsMethodError;
 use PacerIT\BitBayPayAPI\Exceptions\CredentialsNotSet;
@@ -13,6 +11,7 @@ use PacerIT\BitBayPayAPI\Exceptions\MethodResponseFail;
 use PacerIT\BitBayPayAPI\Interfaces\BitBayPayInterface;
 use Psr\Http\Message\ResponseInterface;
 use Rakit\Validation\Validator;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Class BitBayPay.
@@ -114,7 +113,7 @@ class BitBayPay implements BitBayPayInterface
                     'headers' => [
                         'API-Key'           => $this->publicKey,
                         'API-Hash'          => $sign,
-                        'operation-id'      => (string) Str::uuid(),
+                        'operation-id'      => (string) (string) Uuid::uuid4(),
                         'Request-Timestamp' => $time,
                         'Content-Type'      => 'application/json',
                     ],
@@ -286,18 +285,30 @@ class BitBayPay implements BitBayPayInterface
     private function parseResponse(array $response)
     {
         // Checking response status.
-        switch (Arr::get($response, BitBayPayInterface::STATUS)) {
-            case BitBayPayInterface::STATUS_OK:
-                return Arr::get($response, BitBayPayInterface::DATA, []);
+        if (array_key_exists(BitBayPayInterface::STATUS, $response)) {
+            switch ($response[BitBayPayInterface::STATUS]) {
+                case BitBayPayInterface::STATUS_OK:
+                    if (array_key_exists(BitBayPayInterface::DATA, $response)) {
+                        return $response[BitBayPayInterface::DATA];
+                    }
+                    return [];
 
-            case BitBayPayInterface::STATUS_FAIL:
-                $errors = Arr::get($response, BitBayPayInterface::ERRORS, []);
-                $reason = Arr::get($errors, BitBayPayInterface::REASON, 'UNKNOWN_REASON');
+                case BitBayPayInterface::STATUS_FAIL:
+                    $reason = 'UNKNOWN_REASON';
+                    if (array_key_exists(BitBayPayInterface::ERRORS, $response)) {
+                        $errors = $response[BitBayPayInterface::ERRORS];
+                        if (array_key_exists(BitBayPayInterface::REASON, $errors)) {
+                            $reason = $errors[BitBayPayInterface::REASON];
+                        }
+                    }
 
-                throw new MethodResponseFail($reason);
-            default:
-                throw new MethodResponseFail('UNKNOWN_STATUS');
+                    throw new MethodResponseFail($reason);
+                default:
+                    throw new MethodResponseFail('UNKNOWN_STATUS');
+            }
         }
+
+        throw new MethodResponseFail('UNKNOWN_STATUS');
     }
 
     /**

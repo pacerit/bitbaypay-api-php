@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Support\Str;
 use PacerIT\BitBayPayAPI\Exceptions\CallMethodError;
 use PacerIT\BitBayPayAPI\Exceptions\CredentialsNotSet;
 use PacerIT\BitBayPayAPI\Exceptions\MethodResponseFail;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Class GetPaymentTest.
@@ -31,7 +31,7 @@ class GetPaymentTest extends AbstractTest
     {
         $this->expectException(CredentialsNotSet::class);
 
-        $this->client->getPayment(Str::uuid());
+        $this->client->getPayment((string) Uuid::uuid4());
     }
 
     /**
@@ -52,6 +52,6 @@ class GetPaymentTest extends AbstractTest
         $this->client
             ->setPublicKey($this->getTestPublicKey())
             ->setPrivateKey($this->getTestPrivateKey())
-            ->getPayment(Str::uuid());
+            ->getPayment((string) Uuid::uuid4());
     }
 }

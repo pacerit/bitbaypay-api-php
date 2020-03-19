@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Support\Arr;
 use PacerIT\BitBayPayAPI\Exceptions\CallMethodError;
 use PacerIT\BitBayPayAPI\Exceptions\CredentialsNotSet;
 use PacerIT\BitBayPayAPI\Exceptions\MethodResponseFail;
@@ -52,7 +51,7 @@ class GetMarketsTest extends AbstractTest
             ->setPrivateKey($this->getTestPrivateKey())
             ->getMarkets();
 
-        $firstValue = Arr::first($response, null, []);
+        $firstValue = reset($response);
 
         $this->assertArrayHasKey('firstCurrency', $firstValue);
         $this->assertArrayHasKey('secondCurrency', $firstValue);
