@@ -26,7 +26,7 @@ abstract class AbstractTest extends TestCase
      *
      * @since 10/03/2020
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->client = new BitBayPay();
@@ -39,7 +39,7 @@ abstract class AbstractTest extends TestCase
      *
      * @since 10/03/2020
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         $this->client = null;
