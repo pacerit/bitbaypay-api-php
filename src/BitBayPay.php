@@ -291,6 +291,7 @@ class BitBayPay implements BitBayPayInterface
                     if (array_key_exists(BitBayPayInterface::DATA, $response)) {
                         return $response[BitBayPayInterface::DATA];
                     }
+
                     return [];
 
                 case BitBayPayInterface::STATUS_FAIL:
