@@ -38,7 +38,7 @@ class CreatePaymentTest extends AbstractTest
             [
                 BitBayPayInterface::PARAMETER_DESTINATION_CURRENCY => 'PLN',
                 BitBayPayInterface::PARAMETER_PRICE                => '1000',
-                BitBayPayInterface::PARAMETER_ORDER_ID             => Str::random(16),
+                BitBayPayInterface::PARAMETER_ORDER_ID             => (string) Str::random(16),
             ]
         );
     }
@@ -85,8 +85,8 @@ class CreatePaymentTest extends AbstractTest
             ->createPayment(
                 [
                     BitBayPayInterface::PARAMETER_DESTINATION_CURRENCY => 'PLN',
-                    BitBayPayInterface::PARAMETER_PRICE                => '1000',
-                    BitBayPayInterface::PARAMETER_ORDER_ID             => Str::random(16),
+                    BitBayPayInterface::PARAMETER_PRICE                => 100,
+                    BitBayPayInterface::PARAMETER_ORDER_ID             => (string) Str::random(16),
                 ]
             );
 

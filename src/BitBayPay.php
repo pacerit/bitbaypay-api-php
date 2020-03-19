@@ -98,8 +98,10 @@ class BitBayPay implements BitBayPayInterface
         // Generate sign key.
         $time = time();
         $post = null;
+        $formType = 'form_params';
         if ($type !== 'GET') {
             $post = json_encode($parameters);
+            $formType = 'json';
         }
         $sign = hash_hmac('sha512', $this->publicKey.$time.$post, $this->privateKey);
 
@@ -108,8 +110,8 @@ class BitBayPay implements BitBayPayInterface
                 $type,
                 BitBayPayInterface::BASE_URL.$method,
                 [
-                    'form_params' => $parameters,
-                    'headers'     => [
+                    $formType => $parameters,
+                    'headers' => [
                         'API-Key'           => $this->publicKey,
                         'API-Hash'          => $sign,
                         'operation-id'      => (string) Str::uuid(),
