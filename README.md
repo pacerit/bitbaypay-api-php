@@ -8,10 +8,13 @@
 
 Implementation of BitBayPay REST API - https://docs.bitbaypay.com/v1.0.0-en/reference
 
+## Requirements
+* PHP - ^7.2
+
 ## Installation
 You can install this package by composer:
 ```shell script
-composer require pacerit/bitbay-api-php
+composer require pacerit/bitbaypay-api-php
 ```
 ## Usage
 Example call of "payments" API method:
@@ -21,7 +24,7 @@ $client = new BitBayPay();
 $parameters = [
     BitBayPayInterface::PARAMETER_DESTINATION_CURRENCY => 'PLN',
     BitBayPayInterface::PARAMETER_PRICE                => '1000',
-    BitBayPayInterface::PARAMETER_ORDER_ID             => (string)Str::random(16),
+    BitBayPayInterface::PARAMETER_ORDER_ID             => 'randomstring',
     // This parameters below, are not required.
     // BitBayPayInterface::PARAMETER_SOURCE_CURRENCY      => '',
     // BitBayPayInterface::PARAMETER_COVERED_BY           => '',
