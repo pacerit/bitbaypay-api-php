@@ -9,7 +9,7 @@ use ReflectionClass;
 use ReflectionMethod;
 
 /**
- * Class ParseResponseTest
+ * Class ParseResponseTest.
  *
  * @author Wiktor Pacer <kontakt@pacerit.pl>
  *
