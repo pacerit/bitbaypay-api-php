@@ -34,10 +34,19 @@ $parameters = [
     // BitBayPayInterface::PARAMETER_NOTIFICATIONS_URL    => '',
 ];
 
-$client->setPublicKey("YOUR_PUBLIC_KEY")
+$response = $client->setPublicKey("YOUR_PUBLIC_KEY")
     ->setPrivateKey("YOUR_PRIVATE_KEY")
     ->createPayment($parameters);
 ```
+
+Example response:
+```php
+[
+    "paymentId" => "8418c539-f271-4287-b252-d3e3ee12f455",
+    "url"       => "https://checkout.bitbay.net/payment/8418c539-f271-4287-b252-d3e3ee12f455"
+]
+```
+
 ## Available functions
 * Start payment - https://api.bitbaypay.com/rest/bitbaypay/payments
 * Get currency pairs - https://api.bitbaypay.com/rest/bitbaypay/stores/markets

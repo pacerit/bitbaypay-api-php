@@ -300,6 +300,11 @@ class BitBayPay implements BitBayPayInterface
                         $errors = $response[BitBayPayInterface::ERRORS];
                         if (array_key_exists(BitBayPayInterface::REASON, $errors)) {
                             $reason = $errors[BitBayPayInterface::REASON];
+                        } else {
+                            $reason = reset($errors);
+                            if (is_array($reason)) {
+                                $reason = json_encode($reason);
+                            }
                         }
                     }
 
