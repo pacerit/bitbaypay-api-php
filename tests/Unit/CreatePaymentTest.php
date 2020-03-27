@@ -89,7 +89,11 @@ class CreatePaymentTest extends AbstractTest
                 ]
             );
 
-        $this->assertArrayHasKey('paymentId', $response);
-        $this->assertArrayHasKey('url', $response);
+        $this->assertArrayHasKey(BitBayPayInterface::RESPONSE_PAYMENT_ID, $response);
+        $this->assertArrayHasKey(BitBayPayInterface::RESPONSE_URL, $response);
+        $this->assertStringContainsString(
+            'https://checkout.bitbay.net',
+            $response[BitBayPayInterface::RESPONSE_URL]
+        );
     }
 }
