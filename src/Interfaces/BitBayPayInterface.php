@@ -41,7 +41,7 @@ interface BitBayPayInterface
     const PARAMETER_ORDER_ID = 'orderId';
     const PARAMETER_SOURCE_CURRENCY = 'sourceCurrency';
     const PARAMETER_COVERED_BY = 'coveredBy';
-    const PARAMETER_KEEP_SOURCE_CURRENCY = 'keep_source_currency';
+    const PARAMETER_KEEP_SOURCE_CURRENCY = 'keepSourceCurrency';
     const PARAMETER_SUCCESS_CALLBACK_URL = 'successCallbackUrl';
     const PARAMETER_FAILURE_CALLBACK_URL = 'failureCallbackUrl';
     const PARAMETER_NOTIFICATIONS_URL = 'notificationsUrl';
